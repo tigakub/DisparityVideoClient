@@ -239,12 +239,7 @@ class Client: ObservableObject {
         
         var sps: Data? = nil
         var pps: Data? = nil
-        // var decodedSPS: H264SPS? = nil
-        // var decodedPPS: H264PPS? = nil
         for (_, nalu) in nalus.enumerated() {
-            // let unit = H264Unit(nalu: nalu)
-            // let zero = nalu[nalu.startIndex + 4] >> 7
-            // let refIDC = (nalu[nalu.startIndex + 4] >> 5) & 3
             let type = nalu[nalu.startIndex + 4] & 31
             // var typeDescription = "unknown"
             switch(type) {
@@ -258,50 +253,21 @@ class Client: ObservableObject {
                         }
                         frameAggregator.append(nalu)
                     }
-                    /*
-                    if let sps = decodedSPS, let pps = decodedPPS {
-                        let newSlice = try H264NonIDRSlice(unit: unit, sps: sps, pps: pps)
-                        if frameAggregator.count > 0 {
-                            // print("Frame boundary")
-                            processFrame(slices: frameAggregator)
-                            frameAggregator = []
-                        }
-                        frameAggregator.append(newSlice)
-                    }
-                    */
                 case 2:
                     // print("Coded slice data partition A")
                     if self.currentFormatDescription != nil {
                         frameAggregator.append(nalu)
                     }
-                    /*
-                    if let sps = decodedSPS, let pps = decodedPPS {
-                        let newSlice = try H264NonIDRSlice(unit: unit, sps: sps, pps: pps)
-                        frameAggregator.append(newSlice)
-                    }
-                    */
                 case 3:
                     // print("Coded slice data partition B")
                     if self.currentFormatDescription != nil {
                         frameAggregator.append(nalu)
                     }
-                    /*
-                    if let sps = decodedSPS, let pps = decodedPPS {
-                        let newSlice = try H264NonIDRSlice(unit: unit, sps: sps, pps: pps)
-                        frameAggregator.append(newSlice)
-                    }
-                    */
                 case 4:
                     // print("Coded slice data partition C")
                     if self.currentFormatDescription != nil {
                         frameAggregator.append(nalu)
                     }
-                    /*
-                    if let sps = decodedSPS, let pps = decodedPPS {
-                        let newSlice = try H264NonIDRSlice(unit: unit, sps: sps, pps: pps)
-                        frameAggregator.append(newSlice)
-                    }
-                    */
                 case 5:
                     // print("Coded IDR slice")
                     if self.currentFormatDescription != nil {
@@ -312,27 +278,14 @@ class Client: ObservableObject {
                         }
                         frameAggregator.append(nalu)
                     }
-                    /*
-                    if let sps = decodedSPS, let pps = decodedPPS {
-                        let newSlice = try H264IDRSlice(unit: unit, sps: sps, pps: pps)
-                        if frameAggregator.count > 0 {
-                            // print("Frame boundary")
-                            processFrame(slices: frameAggregator)
-                            frameAggregator = []
-                        }
-                        frameAggregator.append(newSlice)
-                    }
-                    */
                 case 6:
                     // typeDescription = "Supplemental enhancement information"
                     break
                 case 7:
                     // print("Sequence parameter set")
-                    // decodedSPS = try H264SPS(unit: unit)
                     sps = nalu
                 case 8:
                     // print("Picture parameter set")
-                    // decodedPPS = try H264PPS(unit: unit)
                     pps = nalu
                 case 9:
                     // typeDescription = "Access unit delimiter"
@@ -360,12 +313,6 @@ class Client: ObservableObject {
                     if self.currentFormatDescription != nil {
                         frameAggregator.append(nalu)
                     }
-                    /*
-                    if let sps = decodedSPS, let pps = decodedPPS {
-                        let newSlice = try H264NonIDRSlice(unit: unit, sps: sps, pps: pps)
-                        frameAggregator.append(newSlice)
-                    }
-                    */
                 case 20:
                     // typeDescription = "Coded slice extension"
                     break
@@ -391,52 +338,9 @@ class Client: ObservableObject {
             
             // print("NALU \(i) (\(String(format: "%6d", nalu.count)) bytes), header zero: \(zero), refIDC: \(refIDC), type: \(String(format: "%2d", type)) (\(typeDescription))")
         }
-        
-        /*
-        var blockBuffer: CMBlockBuffer? = nil
-        if let idr = idrNALU {
-            blockBuffer = H264Unit.createBlockBuffer(nalu: idr)
-        } else if let nidr = nidrNALU {
-            blockBuffer = H264Unit.createBlockBuffer(nalu: nidr)
-        }
-        
-        var sampleBuffer: CMSampleBuffer? = nil
-        if let format = self.currentFormatDescription, let blockBuffer = blockBuffer {
-            sampleBuffer = H264Unit.createSampleBuffer(description: format, blockBuffer: blockBuffer)
-        }
-        
-        if let sampleBuffer = sampleBuffer {
-            if let session = self.currentDecompressionSession {
-                var infoFlags: VTDecodeInfoFlags = []
-                VTDecompressionSessionDecodeFrame(
-                    session,
-                    sampleBuffer: sampleBuffer,
-                    flags: [],
-                    infoFlagsOut: &infoFlags)
-                {
-                    osStatus, infoFlags, cvImageBuffer, timeStamp, duration in
-                    if osStatus != noErr {
-                        print("Decoding resulted in error: \(osStatus)")
-                    } else {
-                        if let cvImageBuffer = cvImageBuffer {
-                            let ciImage = CIImage(cvImageBuffer: cvImageBuffer)
-                            let context = CIContext(options: nil)
-                        }
-                    }
-                }
-            }
-            DispatchQueue.main.async {
-                self._onSampleBufferClosure?(sampleBuffer)
-            }
-        }
-        
-        blockBuffer = nil
-        sampleBuffer = nil
-        */
     }
     
     func processFrame(slices: [Data]) {
-    // func processFrame(slices: [H264Slice]) {
         if let description = self.currentFormatDescription {
             var frameSize: Int = 0
             for slice in slices {
