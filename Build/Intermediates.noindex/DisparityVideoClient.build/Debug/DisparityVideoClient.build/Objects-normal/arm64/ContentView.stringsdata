@@ -1,0 +1,20 @@
+{
+  "source": "/Users/tigakub/Desktop/DisparityVideoStreaming/DisparityVideoClient/DisparityVideoClient/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "FPS: %@"
+      },
+      {
+        "comment": "",
+        "key": "Disconnect"
+      },
+      {
+        "comment": "",
+        "key": "Connect"
+      }
+    ]
+  },
+  "version": 1
+}

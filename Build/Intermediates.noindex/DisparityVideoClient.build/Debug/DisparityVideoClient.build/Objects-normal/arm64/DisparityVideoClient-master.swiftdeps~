@@ -1,0 +1,10 @@
+version: "Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)"
+options: "4ad7d420a9d9fbecc1a0c10310f9dee9643054a9a4b046977e59049555748b97"
+build_start_time: [1680306441, 328076000]
+build_end_time: [1680306441, 354492000]
+inputs:
+  "/Users/tigakub/Desktop/DisparityVideoStreaming/DisparityVideoClient/DisparityVideoClient/Client.swift": !private [1680306386, 694500387]
+  "/Users/tigakub/Desktop/DisparityVideoStreaming/DisparityVideoClient/DisparityVideoClient/ContentView.swift": !private [1680302839, 498970347]
+  "/Users/tigakub/Desktop/DisparityVideoStreaming/DisparityVideoClient/DisparityVideoClient/DataPacket.swift": !private [1680225141, 97452220]
+  "/Users/tigakub/Desktop/DisparityVideoStreaming/DisparityVideoClient/DisparityVideoClient/DisparityVideoClientApp.swift": !private [1679103898, 985410111]
+  "/Users/tigakub/Desktop/DisparityVideoStreaming/DisparityVideoClient/DisparityVideoClient/DisparityVideoView.swift": !private [1680302584, 799694665]
